@@ -111,6 +111,20 @@
       box-shadow: 0 0 0 3px rgba(192, 112, 58, 0.15);
       background: #fff;
     }
+    /* 유효성 에러: 빨간 테두리 + 빨간 안내 문구 */
+    .field.invalid input {
+      border-color: var(--danger);
+      background: #fff7f5;
+    }
+    .field.invalid input:focus {
+      box-shadow: 0 0 0 3px rgba(180, 69, 47, 0.15);
+    }
+    .field-error {
+      color: var(--danger);
+      font-size: 0.8rem;
+      margin-top: 5px;
+      min-height: 1em;
+    }
 
     .btn-add {
       width: 100%;
@@ -128,12 +142,33 @@
     }
     .btn-add:hover { background: var(--accent-dark); }
     .btn-add:active { transform: translateY(1px); }
+    .btn-add:disabled {
+      background: #d9b89c;
+      cursor: default;
+      transform: none;
+    }
 
-    .form-error {
-      color: var(--danger);
-      font-size: 0.84rem;
-      margin-top: 10px;
-      min-height: 1.2em;
+    /* 상단 초록 토스트 안내 */
+    .toast {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translate(-50%, -20px);
+      z-index: 50;
+      background: #2f7d4f;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 12px 22px;
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(47, 125, 79, 0.32);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
     /* ===== List ===== */
@@ -219,6 +254,8 @@
   </style>
 </head>
 <body>
+  <div class="toast" id="toast" role="status" aria-live="polite">예약이 추가되었습니다!</div>
+
   <header>
     <span class="badge">MORNING BREW · 예약 관리</span>
     <h1>모닝브루 예약 관리</h1>
@@ -233,24 +270,27 @@
         <p class="sub">손님 정보를 입력하고 예약을 등록하세요.</p>
 
         <form id="reservation-form" novalidate>
-          <div class="field">
+          <div class="field" data-field="name">
             <label for="name">이름</label>
             <input type="text" id="name" name="name" placeholder="예: 김모닝" autocomplete="name" />
+            <p class="field-error"></p>
           </div>
-          <div class="field">
+          <div class="field" data-field="phone">
             <label for="phone">연락처</label>
             <input type="tel" id="phone" name="phone" placeholder="예: 010-1234-5678" autocomplete="tel" />
+            <p class="field-error"></p>
           </div>
-          <div class="field">
+          <div class="field" data-field="pickup">
             <label for="pickup">픽업 시간</label>
             <input type="time" id="pickup" name="pickup" />
+            <p class="field-error"></p>
           </div>
-          <div class="field">
+          <div class="field" data-field="people">
             <label for="people">인원수</label>
             <input type="number" id="people" name="people" min="1" step="1" placeholder="예: 2" inputmode="numeric" />
+            <p class="field-error"></p>
           </div>
-          <button type="submit" class="btn-add">＋ 예약 추가</button>
-          <p class="form-error" id="form-error" role="alert"></p>
+          <button type="submit" class="btn-add" id="submit-btn">＋ 예약 추가</button>
         </form>
       </section>
 
@@ -273,7 +313,8 @@
     const form = document.getElementById('reservation-form');
     const listEl = document.getElementById('reservation-list');
     const countPill = document.getElementById('count-pill');
-    const errorEl = document.getElementById('form-error');
+    const submitBtn = document.getElementById('submit-btn');
+    const toast = document.getElementById('toast');
 
     const fields = {
       name: document.getElementById('name'),
@@ -281,6 +322,27 @@
       pickup: document.getElementById('pickup'),
       people: document.getElementById('people'),
     };
+
+    // 각 입력의 .field 래퍼와 에러 문구 요소
+    function fieldWrap(key) { return document.querySelector('.field[data-field="' + key + '"]'); }
+    function fieldErrorEl(key) { return fieldWrap(key).querySelector('.field-error'); }
+
+    function setFieldError(key, message) {
+      const wrap = fieldWrap(key);
+      fieldErrorEl(key).textContent = message;
+      wrap.classList.toggle('invalid', Boolean(message));
+    }
+    function clearAllErrors() {
+      Object.keys(fields).forEach(function (k) { setFieldError(k, ''); });
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 3000);
+    }
 
     function escapeHtml(str) {
       return String(str)
@@ -319,31 +381,64 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      const name = fields.name.value.trim();
-      const phone = fields.phone.value.trim();
-      const pickup = fields.pickup.value;
-      const people = fields.people.value.trim();
+      const values = {
+        name: fields.name.value.trim(),
+        phone: fields.phone.value.trim(),
+        pickup: fields.pickup.value,
+        people: fields.people.value.trim(),
+      };
 
-      if (!name || !phone || !pickup || !people) {
-        errorEl.textContent = '모든 칸을 입력해 주세요.';
+      // 1) 빈 칸 검증: 비어 있으면 칸 아래 "필수 항목입니다", 하나라도 비면 제출 중단
+      let hasError = false;
+      let firstInvalid = null;
+      Object.keys(fields).forEach(function (k) {
+        if (!values[k]) {
+          setFieldError(k, '필수 항목입니다');
+          hasError = true;
+          if (!firstInvalid) firstInvalid = fields[k];
+        } else if (k === 'people' && Number(values.people) < 1) {
+          setFieldError(k, '1명 이상 입력해 주세요');
+          hasError = true;
+          if (!firstInvalid) firstInvalid = fields[k];
+        } else {
+          setFieldError(k, '');
+        }
+      });
+      if (hasError) {
+        if (firstInvalid) firstInvalid.focus();
         return;
       }
-      if (Number(people) < 1) {
-        errorEl.textContent = '인원수는 1명 이상이어야 합니다.';
-        return;
-      }
-      errorEl.textContent = '';
 
-      reservations.push({ id: nextId++, name: name, phone: phone, pickup: pickup, people: people });
-      render();
-      form.reset();
-      fields.name.focus();
+      // 2) '저장 중...' 잠깐 표시 후 추가 → 초록 토스트(3초)
+      submitBtn.disabled = true;
+      submitBtn.textContent = '저장 중...';
+      setTimeout(function () {
+        reservations.push({
+          id: nextId++,
+          name: values.name, phone: values.phone,
+          pickup: values.pickup, people: values.people,
+        });
+        render();
+        form.reset();
+        clearAllErrors();
+        submitBtn.disabled = false;
+        submitBtn.textContent = '＋ 예약 추가';
+        showToast('예약이 추가되었습니다!');
+        fields.name.focus();
+      }, 600);
+    });
+
+    // 입력하면 해당 칸의 에러 즉시 해제
+    Object.keys(fields).forEach(function (k) {
+      fields[k].addEventListener('input', function () { setFieldError(k, ''); });
     });
 
     // 삭제 버튼: 이벤트 위임으로 해당 항목만 제거
     listEl.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn-del');
       if (!btn) return;
+      // 3) 삭제 전 확인 창
+      if (!window.confirm('이 예약을 삭제할까요?')) return;
       const id = Number(btn.getAttribute('data-id'));
       reservations = reservations.filter(function (r) { return r.id !== id; });
       render();
