@@ -1,0 +1,12 @@
+# Obsidian 편집기 작업 상태 (개인 환경별로 바뀜 — 버전관리 제외)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 사용자 임시 보관함 (직접 확인용)
+Trash Can/

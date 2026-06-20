@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>모닝브루 | 망원동 동네 카페</title>
+  <meta name="description" content="망원동 골목 끝, 매일 아침 직접 내리는 핸드드립과 당일 구운 수제 스콘을 즐길 수 있는 동네 카페 모닝브루입니다." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #faf6f0;
+      --card: #ffffff;
+      --ink: #3a312a;
+      --ink-soft: #6b5d52;
+      --accent: #c0703a;     /* 따뜻한 커피 브라운/오렌지 */
+      --accent-dark: #a85a28;
+      --line: #ece2d6;
+      --shadow: 0 8px 28px rgba(95, 72, 50, 0.10);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap { width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(160deg, #fff7ee 0%, #f6e7d4 100%);
+      text-align: center;
+      padding: 88px 20px 72px;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero .badge {
+      display: inline-block;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      color: var(--accent-dark);
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-family: 'Gowun Batang', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 1.12rem;
+      color: var(--ink-soft);
+      max-width: 460px;
+      margin: 0 auto 30px;
+    }
+    .hero .cta-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 14px 26px;
+      border-radius: 12px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(192, 112, 58, 0.35);
+    }
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+    .btn-ghost {
+      background: #fff;
+      color: var(--accent-dark);
+      border: 1.5px solid var(--accent);
+    }
+    .btn-ghost:hover { background: #fff3e8; transform: translateY(-2px); }
+
+    /* ===== Section ===== */
+    section { padding: 56px 0; }
+    .section-title {
+      font-family: 'Gowun Batang', serif;
+      font-size: 1.7rem;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 0.96rem;
+      margin-bottom: 34px;
+    }
+
+    /* ===== Features ===== */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+    .feature {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .feature .emoji { font-size: 1.6rem; }
+    .feature p { font-weight: 500; }
+
+    /* ===== Menu cards ===== */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .menu-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px 22px;
+      box-shadow: var(--shadow);
+      transition: transform 0.18s ease;
+    }
+    .menu-card:hover { transform: translateY(-3px); }
+    .menu-card .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .menu-card h3 { font-size: 1.18rem; }
+    .menu-card .price {
+      font-weight: 700;
+      color: var(--accent-dark);
+      white-space: nowrap;
+    }
+    .menu-card .desc {
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      margin-top: 6px;
+    }
+
+    /* ===== Info (위치/영업시간) ===== */
+    .info-wrap {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .info-row {
+      display: flex;
+      gap: 16px;
+      padding: 20px 22px;
+      align-items: flex-start;
+    }
+    .info-row + .info-row { border-top: 1px solid var(--line); }
+    .info-row .ic { font-size: 1.4rem; line-height: 1.4; }
+    .info-row .label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+    .info-row .value { color: var(--ink-soft); }
+    .hours-list { list-style: none; }
+    .hours-list li { display: flex; justify-content: space-between; max-width: 280px; }
+    .hours-list .off { color: var(--accent-dark); font-weight: 600; }
+
+    /* ===== Contact / footer ===== */
+    .contact {
+      background: linear-gradient(160deg, #f6e7d4 0%, #fff7ee 100%);
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+    .contact h2 {
+      font-family: 'Gowun Batang', serif;
+      font-size: 1.7rem;
+      margin-bottom: 10px;
+    }
+    .contact p { color: var(--ink-soft); margin-bottom: 26px; }
+    .contact .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    footer {
+      text-align: center;
+      padding: 28px 20px 40px;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+    }
+
+    /* ===== Desktop tuning ===== */
+    @media (min-width: 600px) {
+      .hero h1 { font-size: 3.6rem; }
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .features { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Hero -->
+  <header class="hero">
+    <span class="badge">서울 · 망원동 동네 카페</span>
+    <h1>모닝브루</h1>
+    <p>매일 아침 직접 내리는 핸드드립 한 잔.<br />혼자여도 편안한, 골목 끝 작은 커피집입니다.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#contact">예약 · 문의하기</a>
+      <a class="btn btn-ghost" href="#menu">메뉴 보기</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 특징 -->
+    <section>
+      <h2 class="section-title">모닝브루의 약속</h2>
+      <p class="section-sub">작지만 정성껏, 매일 같은 마음으로</p>
+      <div class="features">
+        <div class="feature"><span class="emoji">☕</span><p>매일 아침 직접 내리는 핸드드립</p></div>
+        <div class="feature"><span class="emoji">🥐</span><p>당일 구워내는 수제 스콘</p></div>
+        <div class="feature"><span class="emoji">🪑</span><p>혼자 와도 편한 1인 좌석</p></div>
+        <div class="feature"><span class="emoji">🌿</span><p>망원동 골목 끝, 조용한 분위기</p></div>
+      </div>
+    </section>
+
+    <!-- 2. Menu -->
+    <section id="menu">
+      <h2 class="section-title">대표 메뉴</h2>
+      <p class="section-sub">신선한 원두와 당일 베이킹으로 준비합니다</p>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="top"><h3>핸드드립 커피</h3><span class="price">5,500원</span></div>
+          <p class="desc">매일 아침 한 잔씩 정성껏 내리는 시그니처 커피</p>
+        </div>
+        <div class="menu-card">
+          <div class="top"><h3>오늘의 원두</h3><span class="price">4,500원</span></div>
+          <p class="desc">날마다 바뀌는 추천 원두로 즐기는 부담 없는 한 잔</p>
+        </div>
+        <div class="menu-card">
+          <div class="top"><h3>수제 스콘</h3><span class="price">3,500원</span></div>
+          <p class="desc">당일 구워 겉은 바삭, 속은 촉촉한 홈메이드 스콘</p>
+        </div>
+        <div class="menu-card">
+          <div class="top"><h3>계절 과일 에이드</h3><span class="price">6,000원</span></div>
+          <p class="desc">제철 과일로 만든 상큼하고 시원한 음료</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 위치 · 영업시간 -->
+    <section id="info">
+      <h2 class="section-title">찾아오는 길 · 영업시간</h2>
+      <p class="section-sub">망원역에서 도보 6분, 골목 끝에 있어요</p>
+      <div class="info-wrap">
+        <div class="info-row">
+          <span class="ic">📍</span>
+          <div>
+            <div class="label">위치</div>
+            <div class="value">서울 망원동 골목 끝<br />망원역 2번 출구에서 도보 6분</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="ic">🕗</span>
+          <div>
+            <div class="label">영업시간</div>
+            <ul class="hours-list value">
+              <li><span>화요일 ~ 일요일</span><span>08:00 ~ 20:00</span></li>
+              <li><span>월요일</span><span class="off">휴무</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 4. Contact -->
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>편하게 연락 주세요</h2>
+      <p>예약 문의, 단체 방문, 그날의 원두 안내까지 언제든 환영합니다.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="tel:02-123-4567">📞 02-123-4567 전화하기</a>
+        <a class="btn btn-ghost" href="https://instagram.com/morningbrew_official" target="_blank" rel="noopener">📷 @morningbrew_official</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 모닝브루 · 서울 망원동 · 매일 아침 직접 내린 커피
+  </footer>
+
+</body>
+</html>
