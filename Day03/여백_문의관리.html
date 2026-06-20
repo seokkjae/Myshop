@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>여백 스튜디오 | 클라이언트 문의 관리</title>
+  <meta name="description" content="소상공인 로고·브랜딩 디자인 스튜디오 여백의 클라이언트 문의 접수·관리 페이지." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f6f6f4;        /* 종이 같은 오프화이트 */
+      --card: #ffffff;
+      --ink: #1b1b18;       /* 거의 검정 */
+      --ink-soft: #6e6e68;
+      --ink-faint: #9a9a93;
+      --accent: #1b1b18;    /* 모노톤: 검정 버튼 */
+      --line: #e6e5e0;
+      --tag-bg: #f0efea;
+      --danger: #9a3b2c;
+      --shadow: 0 10px 30px rgba(30, 30, 26, 0.06);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 64px;
+    }
+
+    .wrap { width: 100%; max-width: 960px; margin: 0 auto; padding: 0 22px; }
+
+    /* ===== Header ===== */
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--card);
+      padding: 30px 0;
+      margin-bottom: 40px;
+    }
+    .header-inner {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      font-family: 'Gowun Batang', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .brand small {
+      display: block;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      color: var(--ink-faint);
+      margin-top: 4px;
+    }
+    .page-title {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.02em;
+    }
+
+    /* ===== Layout ===== */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 26px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+    }
+    .panel h2 {
+      font-size: 1.06rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      margin-bottom: 4px;
+    }
+    .panel .sub { color: var(--ink-soft); font-size: 0.86rem; margin-bottom: 24px; }
+
+    /* ===== Form ===== */
+    .field { margin-bottom: 17px; }
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin-bottom: 7px;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.96rem;
+      color: var(--ink);
+      background: #fcfcfb;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 11px 13px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .field textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px rgba(27, 27, 24, 0.08);
+      background: #fff;
+    }
+    .field.invalid input,
+    .field.invalid select,
+    .field.invalid textarea {
+      border-color: var(--danger);
+      background: #fdf6f4;
+    }
+    .field-error {
+      color: var(--danger);
+      font-size: 0.78rem;
+      margin-top: 5px;
+      min-height: 1em;
+    }
+
+    .btn-add {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 9px;
+      padding: 14px;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: opacity .15s, transform .05s;
+    }
+    .btn-add:hover { opacity: 0.88; }
+    .btn-add:active { transform: translateY(1px); }
+
+    /* ===== List ===== */
+    .list-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .count-pill {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: var(--tag-bg);
+      border-radius: 999px;
+      padding: 3px 12px;
+    }
+
+    ul.inquiries { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+
+    .inq-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 18px;
+      background: #fcfcfb;
+    }
+    .inq-info { flex: 1; min-width: 0; }
+    .inq-top {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin-bottom: 8px;
+    }
+    .inq-name { font-weight: 700; font-size: 1.04rem; }
+    .inq-type {
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--tag-bg);
+      border-radius: 6px;
+      padding: 2px 9px;
+    }
+    .inq-date { font-size: 0.8rem; color: var(--ink-faint); margin-left: auto; }
+    .inq-meta {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      margin-bottom: 8px;
+    }
+    .inq-body {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .btn-del {
+      flex-shrink: 0;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 13px;
+      cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .btn-del:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+    /* ===== Empty state ===== */
+    .empty {
+      text-align: center;
+      padding: 52px 20px;
+      color: var(--ink-faint);
+    }
+    .empty .icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+    .empty p { font-size: 0.94rem; }
+
+    /* ===== Desktop ===== */
+    @media (min-width: 780px) {
+      .layout {
+        grid-template-columns: 380px 1fr;
+        gap: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand">여백<small>YEOBAEK STUDIO</small></div>
+      <div class="page-title">클라이언트 문의 관리</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="layout">
+      <!-- ===== 문의 입력 폼 ===== -->
+      <section class="panel" aria-labelledby="form-title">
+        <h2 id="form-title">새 문의 접수</h2>
+        <p class="sub">클라이언트 문의 내용을 입력해 접수하세요.</p>
+
+        <form id="inquiry-form" novalidate>
+          <div class="field" data-field="client">
+            <label for="client">클라이언트명</label>
+            <input type="text" id="client" placeholder="예: 망원동 베이커리 / 김대표" autocomplete="organization" />
+            <p class="field-error"></p>
+          </div>
+          <div class="field" data-field="contact">
+            <label for="contact">연락처</label>
+            <input type="text" id="contact" placeholder="예: 010-1234-5678 / email@…" autocomplete="tel" />
+            <p class="field-error"></p>
+          </div>
+          <div class="field" data-field="type">
+            <label for="type">프로젝트 종류</label>
+            <select id="type">
+              <option value="" disabled selected>선택해 주세요</option>
+              <option>로고 디자인</option>
+              <option>브랜드 아이덴티티(BI)</option>
+              <option>패키지 디자인</option>
+              <option>간판·사이니지</option>
+              <option>명함·인쇄물</option>
+              <option>기타</option>
+            </select>
+            <p class="field-error"></p>
+          </div>
+          <div class="field" data-field="budget">
+            <label for="budget">예산 범위</label>
+            <select id="budget">
+              <option value="" disabled selected>선택해 주세요</option>
+              <option>~ 50만원</option>
+              <option>50 ~ 100만원</option>
+              <option>100 ~ 300만원</option>
+              <option>300만원 이상</option>
+              <option>미정 / 상담 후 결정</option>
+            </select>
+            <p class="field-error"></p>
+          </div>
+          <div class="field" data-field="content">
+            <label for="content">내용</label>
+            <textarea id="content" placeholder="프로젝트 개요, 일정, 참고 사항 등을 적어주세요."></textarea>
+            <p class="field-error"></p>
+          </div>
+          <button type="submit" class="btn-add">문의 추가</button>
+        </form>
+      </section>
+
+      <!-- ===== 문의 목록 ===== -->
+      <section class="panel" aria-labelledby="list-title">
+        <div class="list-head">
+          <h2 id="list-title">접수된 문의</h2>
+          <span class="count-pill" id="count-pill">0건</span>
+        </div>
+        <ul class="inquiries" id="inquiry-list"></ul>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // 데이터는 지금은 메모리 배열에만 임시 저장 (추후 localStorage 등 영구 저장 예정)
+    let inquiries = [];
+    let nextId = 1;
+
+    const form = document.getElementById('inquiry-form');
+    const listEl = document.getElementById('inquiry-list');
+    const countPill = document.getElementById('count-pill');
+
+    const fields = {
+      client: document.getElementById('client'),
+      contact: document.getElementById('contact'),
+      type: document.getElementById('type'),
+      budget: document.getElementById('budget'),
+      content: document.getElementById('content'),
+    };
+
+    function fieldWrap(key) { return document.querySelector('.field[data-field="' + key + '"]'); }
+    function setFieldError(key, message) {
+      const wrap = fieldWrap(key);
+      wrap.querySelector('.field-error').textContent = message;
+      wrap.classList.toggle('invalid', Boolean(message));
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function formatDate(d) {
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return yyyy + '.' + mm + '.' + dd;
+    }
+
+    function render() {
+      countPill.textContent = inquiries.length + '건';
+
+      if (inquiries.length === 0) {
+        listEl.innerHTML =
+          '<li class="empty">' +
+          '<div class="icon">🗂️</div>' +
+          '<p>아직 접수된 문의가 없습니다</p>' +
+          '</li>';
+        return;
+      }
+
+      listEl.innerHTML = inquiries.map(function (q) {
+        const meta = [];
+        meta.push('<span>💰 ' + escapeHtml(q.budget) + '</span>');
+        meta.push('<span>✉ ' + escapeHtml(q.contact) + '</span>');
+        return '' +
+          '<li class="inq-item" data-id="' + q.id + '">' +
+            '<div class="inq-info">' +
+              '<div class="inq-top">' +
+                '<span class="inq-name">' + escapeHtml(q.client) + '</span>' +
+                '<span class="inq-type">' + escapeHtml(q.type) + '</span>' +
+                '<span class="inq-date">' + escapeHtml(q.date) + '</span>' +
+              '</div>' +
+              '<div class="inq-meta">' + meta.join('') + '</div>' +
+              (q.content ? '<div class="inq-body">' + escapeHtml(q.content) + '</div>' : '') +
+            '</div>' +
+            '<button type="button" class="btn-del" data-id="' + q.id + '">삭제</button>' +
+          '</li>';
+      }).join('');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const values = {
+        client: fields.client.value.trim(),
+        contact: fields.contact.value.trim(),
+        type: fields.type.value,
+        budget: fields.budget.value,
+        content: fields.content.value.trim(),
+      };
+
+      // 빈 칸 검증
+      let hasError = false;
+      let firstInvalid = null;
+      Object.keys(fields).forEach(function (k) {
+        if (!values[k]) {
+          setFieldError(k, '필수 항목입니다');
+          hasError = true;
+          if (!firstInvalid) firstInvalid = fields[k];
+        } else {
+          setFieldError(k, '');
+        }
+      });
+      if (hasError) {
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
+
+      inquiries.push({
+        id: nextId++,
+        client: values.client,
+        contact: values.contact,
+        type: values.type,
+        budget: values.budget,
+        content: values.content,
+        date: formatDate(new Date()),
+      });
+      render();
+      form.reset();
+      fields.client.focus();
+    });
+
+    // 입력 시 해당 칸 에러 해제
+    Object.keys(fields).forEach(function (k) {
+      const ev = fields[k].tagName === 'SELECT' ? 'change' : 'input';
+      fields[k].addEventListener(ev, function () { setFieldError(k, ''); });
+    });
+
+    // 삭제 (확인 후 해당 항목만 제거)
+    listEl.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn-del');
+      if (!btn) return;
+      if (!window.confirm('이 문의를 삭제할까요?')) return;
+      const id = Number(btn.getAttribute('data-id'));
+      inquiries = inquiries.filter(function (q) { return q.id !== id; });
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
