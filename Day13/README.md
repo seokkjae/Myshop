@@ -2,13 +2,13 @@
 
 ## 무엇이 바뀌었나
 - `Day05/index.html` 의 하드코딩된 Supabase URL/anon 키를 **제거**하고, 예약 저장을 서버리스 함수 `/api/reserve` 호출로 변경.
-- 비밀번호로 보호되는 **관리자 페이지** `Day13/admin.html` 추가 (배포 시 `/admin` 으로도 접근).
+- 비밀번호로 보호되는 **관리자 페이지** `admin.html`(저장소 루트) 추가 (배포 시 `/admin` 으로도 접근).
 - 관리 작업은 `/api/admin` 함수가 **service_role 키**로 처리(RLS 우회). 키는 서버 환경변수에만 존재.
 
 ## 파일
 - `api/reserve.js` — 공개 예약 접수(POST). anon 키 사용.
 - `api/admin.js` — 목록(GET)/상태·메모 수정(PATCH)/삭제(DELETE). service_role + 비밀번호.
-- `Day13/admin.html` — 관리자 대시보드.
+- `admin.html`(저장소 루트) — 관리자 대시보드.
 - `Day13/update_status_note.sql` — status 기본값/제약 설정 SQL.
 - `vercel.json` — `/admin` → `/Day13/admin.html` rewrite.
 

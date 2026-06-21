@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>모닝브루 · 연남동 출근길 픽업 카페</title>
-  <!-- 루트 진입 시 1주차 통합 페이지(Day05)로 이동 -->
-  <meta http-equiv="refresh" content="0; url=./Day05/index.html" />
+  <!-- 루트 진입 시 배포 종류에 따라 이동(아래 스크립트):
+       손님용 배포 → Day05 / 도메인에 'admin' 이 포함된 관리자 배포 → admin.html -->
   <link rel="canonical" href="./Day05/index.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet" />
@@ -28,8 +28,12 @@
     .links a { display: inline-block; margin: 0 8px; }
   </style>
   <script>
-    // 즉시 이동 (메타 새로고침이 막힌 환경 대비)
-    window.location.replace('./Day05/index.html');
+    // 배포 도메인에 'admin' 이 포함되면(관리자 전용 배포) 관리자 페이지를 메인으로,
+    // 그 외(손님용 배포)에서는 Day05 통합 페이지를 메인으로 이동한다.
+    (function () {
+      var isAdmin = /admin/i.test(location.hostname);
+      window.location.replace(isAdmin ? './admin.html' : './Day05/index.html');
+    })();
   </script>
 </head>
 <body>
@@ -39,7 +43,8 @@
     <div class="links">
       <a href="./Day05/index.html">모닝브루(1주차 통합)</a>·
       <a href="./Day01/index.html">모닝브루 랜딩</a>·
-      <a href="./Day03/여백_문의관리.html">여백 스튜디오 문의</a>
+      <a href="./Day03/여백_문의관리.html">여백 스튜디오 문의</a>·
+      <a href="./admin.html">예약 관리자</a>
     </div>
   </div>
 </body>
