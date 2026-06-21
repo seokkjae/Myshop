@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 13 · 수정 결과 보고</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f6f6f4; --card: #ffffff; --ink: #1b1b18; --ink-soft: #6e6e68;
+      --ink-faint: #9a9a93; --accent: #1b1b18; --line: #e6e5e0; --tag-bg: #f0efea;
+      --ok: #2f7d4f; --warn: #97650f; --danger: #9a3b2c;
+      --shadow: 0 10px 30px rgba(30, 30, 26, 0.06);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.75;
+      -webkit-font-smoothing: antialiased; padding-bottom: 80px;
+    }
+    .wrap { width: 100%; max-width: 880px; margin: 0 auto; padding: 0 22px; }
+    header {
+      background: var(--card); border-bottom: 1px solid var(--line);
+      padding: 40px 0 30px; margin-bottom: 34px;
+    }
+    .badge-top {
+      display: inline-block; font-size: 0.74rem; letter-spacing: 0.18em;
+      color: var(--ink-faint); margin-bottom: 10px;
+    }
+    h1 { font-family: 'Gowun Batang', serif; font-size: 1.9rem; letter-spacing: 0.01em; }
+    .lead { color: var(--ink-soft); margin-top: 8px; font-size: 0.98rem; }
+
+    section { margin-bottom: 30px; }
+    h2 {
+      font-size: 1.18rem; font-weight: 700; margin-bottom: 14px;
+      padding-bottom: 8px; border-bottom: 2px solid var(--ink);
+      display: inline-block;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 14px; box-shadow: var(--shadow); padding: 22px 22px; margin-top: 6px;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { font-size: 0.78rem; color: var(--ink-faint); font-weight: 700; letter-spacing: 0.03em; }
+    tr:last-child td { border-bottom: none; }
+    td code, p code, li code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.84em; background: var(--tag-bg); border-radius: 5px; padding: 1px 6px;
+    }
+
+    .pill {
+      display: inline-block; font-size: 0.74rem; font-weight: 700;
+      border-radius: 999px; padding: 2px 10px; white-space: nowrap;
+    }
+    .pill.new { background: #e7f3ea; color: var(--ok); }
+    .pill.edit { background: #e7f0fb; color: #1f5fa8; }
+
+    ul.clean { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    ul.clean li { padding-left: 22px; position: relative; color: var(--ink-soft); }
+    ul.clean li::before { content: '✓'; position: absolute; left: 0; color: var(--ok); font-weight: 700; }
+
+    ol.steps { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--ink-soft); }
+    ol.steps b { color: var(--ink); }
+
+    .note {
+      background: #fdf6f4; border: 1px solid #ecd6cf; border-left: 4px solid var(--danger);
+      border-radius: 10px; padding: 14px 16px; font-size: 0.9rem; color: var(--ink-soft);
+    }
+    .note b { color: var(--danger); }
+    .ok-note {
+      background: #f1f8f3; border: 1px solid #cfe6d7; border-left: 4px solid var(--ok);
+      border-radius: 10px; padding: 14px 16px; font-size: 0.9rem; color: var(--ink-soft);
+    }
+    .flow {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.82rem;
+      background: #fcfcfb; border: 1px solid var(--line); border-radius: 10px;
+      padding: 14px 16px; color: var(--ink-soft); line-height: 1.9; overflow-x: auto;
+    }
+    footer { text-align: center; color: var(--ink-faint); font-size: 0.82rem; margin-top: 40px; }
+    @media (max-width: 560px) { th:nth-child(3), td:nth-child(3) { display: none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="badge-top">DAY 13 · 수정 결과 보고</div>
+      <h1>관리자 페이지 + API 키 환경변수화</h1>
+      <p class="lead">하드코딩된 Supabase 키를 서버 환경변수로 이전하고, 비밀번호로 보호되는 예약 관리자 화면을 추가했습니다.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1. 한눈에 -->
+    <section>
+      <h2>1. 한눈에 보기</h2>
+      <div class="card">
+        <ul class="clean">
+          <li><b>API 키 제거</b> — <code>Day05/index.html</code> 의 Supabase URL·anon 키·<code>createClient</code> 완전 삭제. 저장소 전체에서 키 값 사라짐.</li>
+          <li><b>서버리스 함수 도입</b> — <code>/api/reserve</code>(공개 예약), <code>/api/admin</code>(관리). 키는 서버 환경변수에만 존재.</li>
+          <li><b>관리자 페이지 신설</b> — <code>Day13/admin.html</code> (배포 시 <code>/admin</code>), 비밀번호 게이트로 보호.</li>
+          <li><b>status·note 운영</b> — 상태(대기/확정/완료/취소) 드롭다운 변경 + 관리자 메모 인라인 편집.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. 파일별 변경 -->
+    <section>
+      <h2>2. 파일별 변경 내역</h2>
+      <div class="card">
+        <table>
+          <thead><tr><th>구분</th><th>파일</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill new">신규</span></td><td><code>api/reserve.js</code></td><td>공개 예약 접수(POST). anon 키로 PostgREST INSERT, 서버측 재검증, <code>status='대기'</code> 부여.</td></tr>
+            <tr><td><span class="pill new">신규</span></td><td><code>api/admin.js</code></td><td>비밀번호(<code>x-admin-password</code>) 인증 후 service_role 로 GET·PATCH·DELETE (RLS 우회).</td></tr>
+            <tr><td><span class="pill new">신규</span></td><td><code>Day13/admin.html</code></td><td>관리자 대시보드 (로그인·통계·필터·상태/메모 편집).</td></tr>
+            <tr><td><span class="pill edit">수정</span></td><td><code>Day05/index.html</code></td><td>Supabase CDN·하드코딩 키 제거 → <code>/api/reserve</code> fetch 호출. 검증·토스트 로직 유지.</td></tr>
+            <tr><td><span class="pill edit">수정</span></td><td><code>.gitignore</code></td><td><code>.env</code>, <code>node_modules/</code>, <code>.vercel</code> 제외 추가.</td></tr>
+            <tr><td><span class="pill new">신규</span></td><td><code>vercel.json</code></td><td><code>/admin</code> → <code>/Day13/admin.html</code> rewrite.</td></tr>
+            <tr><td><span class="pill new">신규</span></td><td><code>.env.example</code></td><td>필요한 환경변수 4종 예시.</td></tr>
+            <tr><td><span class="pill new">신규</span></td><td><code>Day13/update_status_note.sql</code></td><td>status 기본값·백필·CHECK 제약 SQL.</td></tr>
+            <tr><td><span class="pill new">신규</span></td><td><code>Day13/README.md</code></td><td>설정·실행 절차.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3. 동작 흐름 -->
+    <section>
+      <h2>3. 동작 흐름</h2>
+      <div class="card">
+        <div class="flow">
+[공개 예약]  Day05 폼 ─POST /api/reserve─▶ (anon 키) ─▶ Supabase INSERT (status=대기)<br />
+[관 리]   admin.html ─x-admin-password─▶ /api/admin ─(검증)─▶ (service_role) ─▶ Supabase<br />
+                                        GET 목록 / PATCH 상태·메모 / DELETE
+        </div>
+        <p style="margin-top:14px; color:var(--ink-soft); font-size:0.9rem;">
+          키는 모두 서버 함수의 <code>process.env</code> 에서만 읽으며, 브라우저로 전송되지 않습니다.
+          관리자 작업은 RLS 를 우회하는 service_role 키를 쓰되, 반드시 비밀번호 검증을 통과해야 합니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. 관리자 화면 -->
+    <section>
+      <h2>4. 관리자 화면 구성</h2>
+      <div class="card">
+        <table>
+          <thead><tr><th>영역</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td><b>로그인 게이트</b></td><td>비밀번호 입력 → <code>sessionStorage</code> 보관. 401 시 자동 재로그인.</td></tr>
+            <tr><td><b>통계 칩</b></td><td>전체 · 대기 · 확정 · 완료 · 취소 건수 (클라이언트 집계).</td></tr>
+            <tr><td><b>필터 / 검색</b></td><td>상태 탭 + 이름·연락처 부분일치 검색, 최신순 정렬.</td></tr>
+            <tr><td><b>예약 카드</b></td><td>이름·인원·연락처(tel)·메뉴·시간·접수시각 + 색상 상태 배지.</td></tr>
+            <tr><td><b>상태 변경</b></td><td>드롭다운 변경 → PATCH 즉시 반영, 배지·통계 갱신, 실패 시 롤백.</td></tr>
+            <tr><td><b>메모</b></td><td><code>note</code> 인라인 textarea + 저장 버튼.</td></tr>
+            <tr><td><b>취소 / 삭제</b></td><td>기본은 <code>status='취소'</code>(소프트), 영구 삭제는 확인창 후 보조 동작.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. 검증 상태 -->
+    <section>
+      <h2>5. 검증 상태</h2>
+      <div class="card">
+        <ul class="clean">
+          <li><code>api/reserve.js</code>, <code>api/admin.js</code> — <code>node --check</code> 문법 검사 통과.</li>
+          <li>저장소 전체 grep — 하드코딩된 키 값(프로젝트 ID·키 문자열) 완전 제거 확인.</li>
+          <li><code>Day05/index.html</code> — <code>supabaseClient</code>/<code>createClient</code> 잔존 없음 확인.</li>
+        </ul>
+        <p class="note" style="margin-top:14px;">
+          <b>주의 ·</b> 서버리스 함수는 파일을 그냥 여는 방식으론 동작하지 않습니다. <code>vercel dev</code> 또는 배포 환경에서만 <code>/api/*</code> 가 응답합니다. 따라서 폼/관리자 실제 동작 확인은 Vercel 환경에서 수행해야 합니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. 남은 작업 -->
+    <section>
+      <h2>6. 사용자가 할 일</h2>
+      <div class="card">
+        <ol class="steps">
+          <li><b>Supabase</b> — <code>Day13/update_status_note.sql</code> 실행.</li>
+          <li><b>Vercel 환경변수</b> 등록(Production·Preview·Development): <code>SUPABASE_URL</code>, <code>SUPABASE_ANON_KEY</code>, <code>SUPABASE_SERVICE_ROLE_KEY</code>, <code>ADMIN_PASSWORD</code>.</li>
+          <li><b>로컬 확인</b> — <code>vercel env pull</code> → <code>vercel dev</code>.</li>
+          <li><b>배포</b> — <code>vercel --prod</code> 또는 git push 자동 배포.</li>
+        </ol>
+        <p class="ok-note" style="margin-top:14px;">
+          <b>잘 된 점 ·</b> service_role 키는 이번 작업의 어떤 코드·커밋에도 포함되지 않았습니다. 앞으로도 env 에만 보관하세요.
+        </p>
+        <p class="note" style="margin-top:12px;">
+          <b>인지 필요 ·</b> 기존 anon 키는 이전 커밋(git 히스토리)에 남아 있습니다. 설계상 공개키이며 RLS(INSERT 전용)가 보호선이지만, 민감하다고 판단되면 Supabase 키 재발급을 고려하세요.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      모닝브루 · Day 13 수정 결과 · 자세한 절차는 <code>Day13/README.md</code>, 계획은 <code>Day13/수정계획.md</code> 참고
+    </footer>
+  </main>
+</body>
+</html>

@@ -721,14 +721,9 @@
     <small>최종 업데이트: 2026-06-22</small>
   </footer>
 
-  <!-- Supabase JS 클라이언트 (CDN, npm 설치 불필요) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Supabase 초기화
-    const SUPABASE_URL = 'https://phuknnyhinshixnwctet.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBodWtubnloaW5zaGl4bndjdGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NzQ4NzcsImV4cCI6MjA5NzU1MDg3N30.3kre047kq570LDU7jmHDK3-a6U0Pr-et5YcfEphUMRA';
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+    // 예약 저장은 서버리스 함수(/api/reserve)를 통해 처리한다.
+    // Supabase URL·키는 서버 환경변수에만 존재하며 이 페이지에는 노출되지 않는다.
     const form = document.getElementById('reservation-form');
     const submitBtn = document.getElementById('submit-btn');
     const toast = document.getElementById('toast');
@@ -805,19 +800,23 @@
         return;
       }
 
-      // 2) Supabase reservations 테이블에 INSERT
+      // 2) 서버리스 함수(/api/reserve)로 예약 전송
       submitBtn.disabled = true;
       submitBtn.textContent = '저장 중...';
       try {
         // 폼 필드 → 테이블 컬럼 매핑 (date(픽업 날짜)는 테이블에 없어 저장하지 않음)
-        const { error } = await supabaseClient.from('reservations').insert([{
-          name: values.name,
-          phone: values.phone,
-          menu_preference: values.menu,
-          time: values.pickup,
-          count: Number(values.people),
-        }]);
-        if (error) throw error;
+        const resp = await fetch('/api/reserve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: values.name,
+            phone: values.phone,
+            menu_preference: values.menu,
+            time: values.pickup,
+            count: Number(values.people),
+          }),
+        });
+        if (!resp.ok) throw new Error('save failed');
 
         form.reset();
         clearAllErrors();

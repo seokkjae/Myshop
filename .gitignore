@@ -10,3 +10,11 @@ desktop.ini
 
 # 사용자 임시 보관함 (직접 확인용)
 Trash Can/
+
+# 환경변수 / Vercel (service_role 키 등 비밀값 — 절대 커밋 금지)
+.env
+.env.local
+.env.*.local
+!.env.example
+node_modules/
+.vercel

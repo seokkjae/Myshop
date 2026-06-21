@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>모닝브루 · 예약 관리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f6f6f4;
+      --card: #ffffff;
+      --ink: #1b1b18;
+      --ink-soft: #6e6e68;
+      --ink-faint: #9a9a93;
+      --accent: #1b1b18;
+      --line: #e6e5e0;
+      --tag-bg: #f0efea;
+      --danger: #9a3b2c;
+      --shadow: 0 10px 30px rgba(30, 30, 26, 0.06);
+
+      /* 상태 색상 */
+      --st-wait-bg: #fdf3e0;  --st-wait-ink: #97650f;
+      --st-ok-bg:   #e7f0fb;  --st-ok-ink:   #1f5fa8;
+      --st-done-bg: #e7f3ea;  --st-done-ink: #2f7d4f;
+      --st-cancel-bg: #f1eeee; --st-cancel-ink: #8a8580;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 64px;
+    }
+
+    .wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 22px; }
+
+    /* ===== Header ===== */
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--card);
+      padding: 22px 0;
+      margin-bottom: 26px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      font-family: 'Gowun Batang', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .brand small {
+      display: block;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      color: var(--ink-faint);
+      margin-top: 2px;
+    }
+    .header-actions { display: flex; gap: 8px; }
+    .btn-ghost {
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .btn-ghost:hover { background: var(--tag-bg); border-color: var(--ink-faint); }
+
+    /* ===== Stats ===== */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 16px;
+      min-width: 92px;
+      box-shadow: var(--shadow);
+    }
+    .stat .label { font-size: 0.76rem; color: var(--ink-faint); }
+    .stat .num { font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+
+    /* ===== Toolbar ===== */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .filters { display: flex; flex-wrap: wrap; gap: 6px; }
+    .filter-btn {
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 15px;
+      cursor: pointer;
+      transition: all .12s;
+    }
+    .filter-btn:hover { border-color: var(--ink-faint); }
+    .filter-btn.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+    .search-box input {
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 9px 13px;
+      width: 220px;
+      max-width: 50vw;
+    }
+    .search-box input:focus { outline: none; border-color: var(--ink); }
+
+    /* ===== List ===== */
+    ul.list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+    .res {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 18px 18px;
+    }
+    .res-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .res-name { font-weight: 700; font-size: 1.06rem; }
+    .res-name .people {
+      font-weight: 500;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      margin-left: 6px;
+    }
+    .res-date { font-size: 0.8rem; color: var(--ink-faint); margin-left: auto; white-space: nowrap; }
+
+    .badge {
+      font-size: 0.76rem;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 11px;
+      white-space: nowrap;
+    }
+    .badge.대기 { background: var(--st-wait-bg); color: var(--st-wait-ink); }
+    .badge.확정 { background: var(--st-ok-bg); color: var(--st-ok-ink); }
+    .badge.완료 { background: var(--st-done-bg); color: var(--st-done-ink); }
+    .badge.취소 { background: var(--st-cancel-bg); color: var(--st-cancel-ink); }
+
+    .res-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 18px;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      margin-bottom: 12px;
+    }
+    .res-meta a { color: var(--ink-soft); text-decoration: none; }
+    .res-meta a:hover { color: var(--ink); text-decoration: underline; }
+
+    .res-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .ctrl { display: flex; flex-direction: column; gap: 5px; }
+    .ctrl label { font-size: 0.74rem; color: var(--ink-faint); }
+    .res-controls select {
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: #fcfcfb;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 11px;
+      cursor: pointer;
+    }
+    .note-ctrl { flex: 1; min-width: 220px; }
+    .note-row { display: flex; gap: 8px; align-items: flex-start; }
+    .note-ctrl textarea {
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: var(--ink);
+      background: #fcfcfb;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 11px;
+      resize: vertical;
+      min-height: 40px;
+      line-height: 1.5;
+    }
+    .res-controls textarea:focus,
+    .res-controls select:focus { outline: none; border-color: var(--ink); }
+
+    .btn-sm {
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .btn-save { color: #fff; background: var(--accent); border-color: var(--accent); }
+    .btn-save:hover { opacity: .88; }
+    .btn-cancel:hover { background: #faf0ec; color: var(--danger); border-color: #e3c7bf; }
+    .btn-del { color: var(--ink-faint); }
+    .btn-del:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+    .res-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+    }
+
+    /* ===== States ===== */
+    .state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--ink-faint);
+    }
+    .state .icon { font-size: 1.8rem; margin-bottom: 12px; opacity: 0.6; }
+
+    /* ===== Toast ===== */
+    .toast {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translate(-50%, -20px);
+      z-index: 60;
+      background: #2f7d4f;
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 500;
+      padding: 11px 20px;
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(47, 125, 79, 0.32);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { background: #b23b3b; box-shadow: 0 8px 24px rgba(178, 59, 59, 0.32); }
+
+    /* ===== Login gate ===== */
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+    }
+    .gate.hidden { display: none; }
+    .gate-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 34px 28px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .gate-card h1 {
+      font-family: 'Gowun Batang', serif;
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+    .gate-card p { color: var(--ink-soft); font-size: 0.86rem; margin-bottom: 22px; }
+    .gate-card input {
+      width: 100%;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--ink);
+      background: #fcfcfb;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+    .gate-card input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(27,27,24,.08); }
+    .gate-card button {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 9px;
+      padding: 13px;
+      cursor: pointer;
+    }
+    .gate-card button:hover { opacity: .9; }
+    .gate-card button:disabled { opacity: .5; cursor: default; }
+    .gate-err { color: var(--danger); font-size: 0.82rem; min-height: 1.2em; margin-bottom: 8px; }
+
+    /* ===== Desktop ===== */
+    @media (min-width: 720px) {
+      .res-head { flex-wrap: nowrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 토스트 -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- 로그인 게이트 -->
+  <div class="gate" id="gate">
+    <form class="gate-card" id="gate-form">
+      <h1>예약 관리</h1>
+      <p>모닝브루 관리자 전용 · 비밀번호를 입력하세요</p>
+      <p class="gate-err" id="gate-err"></p>
+      <input type="password" id="gate-pw" placeholder="관리자 비밀번호" autocomplete="current-password" />
+      <button type="submit" id="gate-btn">로그인</button>
+    </form>
+  </div>
+
+  <!-- 본문 -->
+  <div id="app" style="display:none;">
+    <header>
+      <div class="wrap header-inner">
+        <div class="brand">모닝브루<small>RESERVATION ADMIN</small></div>
+        <div class="header-actions">
+          <button class="btn-ghost" id="refresh-btn">↻ 새로고침</button>
+          <button class="btn-ghost" id="logout-btn">로그아웃</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <!-- 통계 -->
+      <div class="stats" id="stats"></div>
+
+      <!-- 툴바 -->
+      <div class="toolbar">
+        <div class="filters" id="filters">
+          <button class="filter-btn active" data-status="전체">전체</button>
+          <button class="filter-btn" data-status="대기">대기</button>
+          <button class="filter-btn" data-status="확정">확정</button>
+          <button class="filter-btn" data-status="완료">완료</button>
+          <button class="filter-btn" data-status="취소">취소</button>
+        </div>
+        <div class="search-box">
+          <input type="search" id="search" placeholder="이름·연락처 검색" />
+        </div>
+      </div>
+
+      <!-- 목록 -->
+      <ul class="list" id="list"></ul>
+      <div class="state" id="state" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    const STATUSES = ['대기', '확정', '완료', '취소'];
+    let reservations = [];
+    let activeFilter = '전체';
+    let searchTerm = '';
+
+    const gate = document.getElementById('gate');
+    const gateForm = document.getElementById('gate-form');
+    const gatePw = document.getElementById('gate-pw');
+    const gateBtn = document.getElementById('gate-btn');
+    const gateErr = document.getElementById('gate-err');
+    const app = document.getElementById('app');
+    const listEl = document.getElementById('list');
+    const stateEl = document.getElementById('state');
+    const statsEl = document.getElementById('stats');
+    const toast = document.getElementById('toast');
+
+    // ── 유틸 ────────────────────────────────────────────
+    function escapeHtml(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function fmtDate(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      if (isNaN(d)) return escapeHtml(iso);
+      const p = (n) => String(n).padStart(2, '0');
+      return d.getFullYear() + '.' + p(d.getMonth() + 1) + '.' + p(d.getDate()) +
+        ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+    }
+    function getPw() { return sessionStorage.getItem('mb_admin_pw') || ''; }
+
+    let toastTimer = null;
+    function showToast(msg, isError) {
+      toast.textContent = msg;
+      toast.classList.toggle('error', Boolean(isError));
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    // ── API ─────────────────────────────────────────────
+    async function api(method, body) {
+      const opts = { method, headers: { 'x-admin-password': getPw() } };
+      if (body) {
+        opts.headers['Content-Type'] = 'application/json';
+        opts.body = JSON.stringify(body);
+      }
+      const resp = await fetch('/api/admin', opts);
+      if (resp.status === 401) {
+        sessionStorage.removeItem('mb_admin_pw');
+        showGate('세션이 만료되었습니다. 다시 로그인하세요.');
+        throw new Error('unauthorized');
+      }
+      if (!resp.ok) {
+        let msg = '요청에 실패했습니다.';
+        try { msg = (await resp.json()).error || msg; } catch {}
+        throw new Error(msg);
+      }
+      return resp.json();
+    }
+
+    // ── 로그인 게이트 ────────────────────────────────────
+    function showGate(errMsg) {
+      app.style.display = 'none';
+      gate.classList.remove('hidden');
+      gateErr.textContent = errMsg || '';
+      gatePw.value = '';
+      gatePw.focus();
+    }
+    function enterApp() {
+      gate.classList.add('hidden');
+      app.style.display = '';
+      loadReservations();
+    }
+
+    gateForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pw = gatePw.value.trim();
+      if (!pw) return;
+      gateBtn.disabled = true;
+      gateBtn.textContent = '확인 중...';
+      gateErr.textContent = '';
+      try {
+        // 비밀번호를 먼저 저장한 뒤 GET 으로 검증
+        sessionStorage.setItem('mb_admin_pw', pw);
+        await api('GET');
+        enterApp();
+      } catch (err) {
+        sessionStorage.removeItem('mb_admin_pw');
+        gateErr.textContent = err.message === 'unauthorized'
+          ? '비밀번호가 올바르지 않습니다.'
+          : '로그인 중 오류가 발생했습니다.';
+      } finally {
+        gateBtn.disabled = false;
+        gateBtn.textContent = '로그인';
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      sessionStorage.removeItem('mb_admin_pw');
+      showGate('');
+    });
+    document.getElementById('refresh-btn').addEventListener('click', () => loadReservations());
+
+    // ── 데이터 로드 / 렌더 ───────────────────────────────
+    async function loadReservations() {
+      listEl.innerHTML = '';
+      stateEl.style.display = '';
+      stateEl.innerHTML = '<p>불러오는 중…</p>';
+      try {
+        const data = await api('GET');
+        reservations = data.reservations || [];
+        render();
+      } catch (err) {
+        if (err.message === 'unauthorized') return;
+        stateEl.style.display = '';
+        stateEl.innerHTML = '<div class="icon">⚠️</div><p>' + escapeHtml(err.message) + '</p>';
+      }
+    }
+
+    function renderStats() {
+      const counts = { 전체: reservations.length, 대기: 0, 확정: 0, 완료: 0, 취소: 0 };
+      reservations.forEach((r) => { if (counts[r.status] !== undefined) counts[r.status]++; });
+      const order = ['전체', '대기', '확정', '완료', '취소'];
+      statsEl.innerHTML = order.map((k) =>
+        '<div class="stat"><div class="label">' + k + '</div><div class="num">' + counts[k] + '</div></div>'
+      ).join('');
+    }
+
+    function visibleReservations() {
+      const term = searchTerm.trim().toLowerCase();
+      return reservations.filter((r) => {
+        if (activeFilter !== '전체' && r.status !== activeFilter) return false;
+        if (term) {
+          const hay = ((r.name || '') + ' ' + (r.phone || '')).toLowerCase();
+          if (!hay.includes(term)) return false;
+        }
+        return true;
+      });
+    }
+
+    function render() {
+      renderStats();
+      const rows = visibleReservations();
+
+      if (reservations.length === 0) {
+        listEl.innerHTML = '';
+        stateEl.style.display = '';
+        stateEl.innerHTML = '<div class="icon">🗂️</div><p>아직 접수된 예약이 없습니다</p>';
+        return;
+      }
+      if (rows.length === 0) {
+        listEl.innerHTML = '';
+        stateEl.style.display = '';
+        stateEl.innerHTML = '<div class="icon">🔍</div><p>조건에 맞는 예약이 없습니다</p>';
+        return;
+      }
+      stateEl.style.display = 'none';
+
+      listEl.innerHTML = rows.map((r) => {
+        const status = STATUSES.includes(r.status) ? r.status : '대기';
+        const options = STATUSES.map((s) =>
+          '<option value="' + s + '"' + (s === status ? ' selected' : '') + '>' + s + '</option>'
+        ).join('');
+        return '' +
+          '<li class="res" data-id="' + r.id + '">' +
+            '<div class="res-head">' +
+              '<span class="res-name">' + escapeHtml(r.name) +
+                '<span class="people">' + escapeHtml(r.count) + '명</span></span>' +
+              '<span class="badge ' + status + '" data-badge>' + status + '</span>' +
+              '<span class="res-date">' + fmtDate(r.created_at) + '</span>' +
+            '</div>' +
+            '<div class="res-meta">' +
+              '<span>📞 <a href="tel:' + escapeHtml(r.phone) + '">' + escapeHtml(r.phone) + '</a></span>' +
+              '<span>☕ ' + escapeHtml(r.menu_preference) + '</span>' +
+              '<span>⏰ ' + escapeHtml(r.time) + '</span>' +
+            '</div>' +
+            '<div class="res-controls">' +
+              '<div class="ctrl">' +
+                '<label>상태</label>' +
+                '<select data-status-select>' + options + '</select>' +
+              '</div>' +
+              '<div class="ctrl note-ctrl">' +
+                '<label>관리자 메모</label>' +
+                '<div class="note-row">' +
+                  '<textarea data-note placeholder="메모를 입력하세요">' + escapeHtml(r.note) + '</textarea>' +
+                  '<button class="btn-sm btn-save" data-save>저장</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="res-actions">' +
+              '<button class="btn-sm btn-cancel" data-cancel>예약 취소</button>' +
+              '<button class="btn-sm btn-del" data-del>영구 삭제</button>' +
+            '</div>' +
+          '</li>';
+      }).join('');
+    }
+
+    // ── 항목별 동작 (이벤트 위임) ─────────────────────────
+    function findRes(id) { return reservations.find((r) => String(r.id) === String(id)); }
+
+    listEl.addEventListener('change', async (e) => {
+      const sel = e.target.closest('[data-status-select]');
+      if (!sel) return;
+      const li = sel.closest('.res');
+      const id = li.getAttribute('data-id');
+      const newStatus = sel.value;
+      try {
+        await api('PATCH', { id: Number(id), status: newStatus });
+        const r = findRes(id);
+        if (r) r.status = newStatus;
+        render();
+        showToast('상태를 "' + newStatus + '"(으)로 변경했습니다.');
+      } catch (err) {
+        if (err.message !== 'unauthorized') showToast(err.message, true);
+        render(); // 롤백(원래 값으로 다시 그림)
+      }
+    });
+
+    listEl.addEventListener('click', async (e) => {
+      const li = e.target.closest('.res');
+      if (!li) return;
+      const id = li.getAttribute('data-id');
+
+      // 메모 저장
+      if (e.target.closest('[data-save]')) {
+        const ta = li.querySelector('[data-note]');
+        const note = ta.value;
+        const btn = e.target.closest('[data-save]');
+        btn.disabled = true;
+        try {
+          await api('PATCH', { id: Number(id), note });
+          const r = findRes(id);
+          if (r) r.note = note;
+          showToast('메모를 저장했습니다.');
+        } catch (err) {
+          if (err.message !== 'unauthorized') showToast(err.message, true);
+        } finally {
+          btn.disabled = false;
+        }
+        return;
+      }
+
+      // 예약 취소 (소프트: status='취소')
+      if (e.target.closest('[data-cancel]')) {
+        const r = findRes(id);
+        if (r && r.status === '취소') { showToast('이미 취소된 예약입니다.', true); return; }
+        if (!window.confirm('이 예약을 "취소" 상태로 변경할까요?')) return;
+        try {
+          await api('PATCH', { id: Number(id), status: '취소' });
+          if (r) r.status = '취소';
+          render();
+          showToast('예약을 취소 처리했습니다.');
+        } catch (err) {
+          if (err.message !== 'unauthorized') showToast(err.message, true);
+        }
+        return;
+      }
+
+      // 영구 삭제 (하드)
+      if (e.target.closest('[data-del]')) {
+        if (!window.confirm('이 예약을 영구 삭제할까요?\n(되돌릴 수 없습니다. 보통은 "예약 취소"를 권장합니다.)')) return;
+        try {
+          await api('DELETE', { id: Number(id) });
+          reservations = reservations.filter((x) => String(x.id) !== String(id));
+          render();
+          showToast('예약을 삭제했습니다.');
+        } catch (err) {
+          if (err.message !== 'unauthorized') showToast(err.message, true);
+        }
+        return;
+      }
+    });
+
+    // ── 필터 / 검색 ──────────────────────────────────────
+    document.getElementById('filters').addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      activeFilter = btn.getAttribute('data-status');
+      document.querySelectorAll('.filter-btn').forEach((b) => b.classList.toggle('active', b === btn));
+      render();
+    });
+    document.getElementById('search').addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      render();
+    });
+
+    // ── 시작: 세션에 비밀번호가 있으면 바로 진입 시도 ─────
+    (async function init() {
+      if (getPw()) {
+        try { await api('GET'); enterApp(); return; }
+        catch { sessionStorage.removeItem('mb_admin_pw'); }
+      }
+      showGate('');
+    })();
+  </script>
+</body>
+</html>
