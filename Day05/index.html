@@ -5,6 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>모닝브루 | 연남동 출근길 픽업 카페</title>
   <meta name="description" content="연남동 골목, 출근 전 메뉴와 픽업 시간을 미리 고르고 줄 서지 않고 받는 동네 카페 모닝브루. 직접 내리는 핸드드립과 당일 구운 수제 스콘을 빠르게 픽업하세요." />
+
+  <!-- ===== AEO/GEO: 정규화 · 소셜 공유 (도메인은 실제 배포 주소로 교체 필요) ===== -->
+  <link rel="canonical" href="https://morningbrew.example.com/" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#c0703a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='90'%3E☕%3C/text%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="모닝브루" />
+  <meta property="og:title" content="모닝브루 | 연남동 출근길 픽업 카페" />
+  <meta property="og:description" content="출근 전 메뉴와 픽업 시간을 미리 골라 줄 서지 않고 받는 연남동 동네 카페 모닝브루." />
+  <meta property="og:image" content="https://morningbrew.example.com/og-image.jpg" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:url" content="https://morningbrew.example.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="모닝브루 | 연남동 출근길 픽업 카페" />
+  <meta name="twitter:description" content="출근 전 미리 주문하고 줄 서지 않는 연남동 픽업 카페." />
+
+  <!-- ===== AEO/GEO: 구조화 데이터 (schema.org) · 값은 실습용 예시 ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    "name": "모닝브루",
+    "description": "서울 연남동의 출근길 픽업 전문 동네 카페. 출근 전 메뉴와 픽업 시간을 미리 골라 줄 서지 않고 받습니다.",
+    "image": "https://morningbrew.example.com/og-image.jpg",
+    "url": "https://morningbrew.example.com/",
+    "telephone": "+82-2-000-0000",
+    "servesCuisine": "Coffee",
+    "priceRange": "₩₩",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "연남동 (실습용 예시 주소)",
+      "addressLocality": "서울 마포구",
+      "addressCountry": "KR"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "08:00",
+        "closes": "20:00"
+      }
+    ],
+    "hasMenu": {
+      "@type": "Menu",
+      "hasMenuSection": {
+        "@type": "MenuSection",
+        "name": "대표 메뉴",
+        "hasMenuItem": [
+          { "@type": "MenuItem", "name": "핸드드립 커피", "offers": { "@type": "Offer", "price": "5500", "priceCurrency": "KRW" } },
+          { "@type": "MenuItem", "name": "오늘의 원두", "offers": { "@type": "Offer", "price": "4500", "priceCurrency": "KRW" } },
+          { "@type": "MenuItem", "name": "수제 스콘", "offers": { "@type": "Offer", "price": "3500", "priceCurrency": "KRW" } },
+          { "@type": "MenuItem", "name": "계절 과일 에이드", "offers": { "@type": "Offer", "price": "6000", "priceCurrency": "KRW" } }
+        ]
+      }
+    },
+    "sameAs": ["https://instagram.com/morningbrew_demo"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "픽업은 몇 시부터 가능한가요?",
+        "acceptedAnswer": { "@type": "Answer", "text": "오전 8시부터 오후 7시 30분까지 픽업이 가능합니다. 매장은 08:00에 문을 엽니다." } },
+      { "@type": "Question", "name": "예약은 어떻게 하나요?",
+        "acceptedAnswer": { "@type": "Answer", "text": "홈페이지의 픽업 예약 폼에서 이름·연락처·메뉴·날짜·시간·인원을 입력하면 예약이 등록됩니다." } },
+      { "@type": "Question", "name": "휴무일은 언제인가요?",
+        "acceptedAnswer": { "@type": "Answer", "text": "매주 월요일은 휴무이며, 화요일부터 일요일까지 08:00~20:00 영업합니다." } },
+      { "@type": "Question", "name": "위치가 어디인가요?",
+        "acceptedAnswer": { "@type": "Answer", "text": "서울 연남동 골목에 있으며, 홍대입구역 3번 출구에서 도보 8분 거리입니다." } }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -399,6 +475,39 @@
     /* 메뉴 섹션 하단 영업시간 블록 간격 */
     .hours-block { margin-top: 24px; }
 
+    /* 소개(About) 리드 문단 */
+    .lead { text-align: center; max-width: 600px; margin: 0 auto; color: var(--ink-soft); }
+    .lead b { color: var(--ink); }
+
+    /* FAQ 아코디언 */
+    .faq-list { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 2px 18px;
+      box-shadow: var(--shadow);
+    }
+    .faq-item summary {
+      cursor: pointer;
+      font-weight: 700;
+      padding: 15px 28px 15px 0;
+      list-style: none;
+      position: relative;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      position: absolute;
+      right: 2px;
+      top: 13px;
+      font-size: 1.2rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 0 15px; margin: 0; color: var(--ink-soft); }
+
     footer {
       text-align: center;
       padding: 28px 20px 40px;
@@ -414,8 +523,9 @@
     }
     @media (min-width: 760px) {
       .layout {
-        grid-template-columns: 360px 1fr;
-        gap: 28px;
+        grid-template-columns: 1fr;
+        max-width: 520px;
+        margin: 0 auto;
       }
     }
   </style>
@@ -436,8 +546,21 @@
     </div>
   </header>
 
-  <!-- 2. 중단: 대표 메뉴 + 영업시간·픽업 가능 시간 -->
+  <!-- 2. 중단: 소개 + 대표 메뉴 + 영업시간·픽업 가능 시간 -->
   <main class="wrap">
+
+    <!-- 소개 (엔티티 정의 · AEO/GEO) -->
+    <section id="about">
+      <h2 class="section-title">모닝브루 소개</h2>
+      <p class="section-sub">서울 연남동의 출근길 픽업 전문 동네 카페</p>
+      <p class="lead">
+        <b>모닝브루</b>는 서울 연남동 골목에 자리한 <b>출근길 픽업 전문 동네 카페</b>입니다.
+        출근 전에 메뉴와 픽업 시간을 미리 골라 두면, 줄 서지 않고 갓 내린 핸드드립 커피와
+        당일 구운 수제 스콘을 바로 받아 갈 수 있습니다. 매일 아침 <b>08:00</b>에 문을 열어,
+        바쁜 출근길에도 따뜻한 한 잔으로 하루를 시작할 수 있습니다.
+      </p>
+    </section>
+
     <section id="menu">
       <h2 class="section-title">대표 메뉴</h2>
       <p class="section-sub">신선한 원두와 당일 베이킹으로 준비합니다</p>
@@ -506,8 +629,8 @@
               <p class="field-error"></p>
             </div>
             <div class="field" data-field="menu">
-              <label for="menu">메뉴</label>
-              <select id="menu" name="menu">
+              <label for="menu-select">메뉴</label>
+              <select id="menu-select" name="menu">
                 <option value="" disabled selected>메뉴를 선택하세요</option>
                 <option>핸드드립 커피</option>
                 <option>오늘의 원두</option>
@@ -534,15 +657,32 @@
             <button type="submit" class="btn-add" id="submit-btn">＋ 예약 추가</button>
           </form>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- 예약 목록 -->
-        <div class="card" aria-labelledby="list-title">
-          <div class="list-head">
-            <h3 class="card-title" id="list-title">예약 목록</h3>
-            <span class="count-pill" id="count-pill">0건</span>
-          </div>
-          <ul class="reservations" id="reservation-list"></ul>
-        </div>
+  <!-- 자주 묻는 질문 (AEO/GEO · 위 FAQPage 스키마와 동일 내용) -->
+  <section id="faq">
+    <div class="wrap">
+      <h2 class="section-title">자주 묻는 질문</h2>
+      <p class="section-sub">예약 · 픽업 · 영업시간 안내</p>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>픽업은 몇 시부터 가능한가요?</summary>
+          <p>오전 8시부터 오후 7시 30분까지 픽업이 가능합니다. 매장은 08:00에 문을 엽니다.</p>
+        </details>
+        <details class="faq-item">
+          <summary>예약은 어떻게 하나요?</summary>
+          <p>홈페이지의 픽업 예약 폼에서 이름·연락처·메뉴·날짜·시간·인원을 입력하면 예약이 등록됩니다.</p>
+        </details>
+        <details class="faq-item">
+          <summary>휴무일은 언제인가요?</summary>
+          <p>매주 월요일은 휴무이며, 화요일부터 일요일까지 08:00~20:00 영업합니다.</p>
+        </details>
+        <details class="faq-item">
+          <summary>위치가 어디인가요?</summary>
+          <p>서울 연남동 골목에 있으며, 홍대입구역 3번 출구에서 도보 8분 거리입니다.</p>
+        </details>
       </div>
     </div>
   </section>
@@ -576,7 +716,8 @@
   </section>
 
   <footer>
-    © 2026 모닝브루 · 서울 연남동 · 출근 전 미리 주문하는 픽업 커피
+    © 2026 모닝브루 · 서울 연남동 · 출근 전 미리 주문하는 픽업 커피<br />
+    <small>최종 업데이트: 2026-06-22</small>
   </footer>
 
   <script>
@@ -606,15 +747,13 @@
     }
 
     const form = document.getElementById('reservation-form');
-    const listEl = document.getElementById('reservation-list');
-    const countPill = document.getElementById('count-pill');
     const submitBtn = document.getElementById('submit-btn');
     const toast = document.getElementById('toast');
 
     const fields = {
       name: document.getElementById('name'),
       phone: document.getElementById('phone'),
-      menu: document.getElementById('menu'),
+      menu: document.getElementById('menu-select'),
       date: document.getElementById('date'),
       pickup: document.getElementById('pickup'),
       people: document.getElementById('people'),
@@ -648,43 +787,6 @@
       toast.classList.add('show');
       if (toastTimer) clearTimeout(toastTimer);
       toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 3000);
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
-
-    function render() {
-      countPill.textContent = reservations.length + '건';
-
-      if (reservations.length === 0) {
-        listEl.innerHTML =
-          '<li class="empty">' +
-          '<div class="icon">☕</div>' +
-          '<p>아직 예약이 없습니다. 첫 예약을 추가해 보세요!</p>' +
-          '</li>';
-        return;
-      }
-
-      listEl.innerHTML = reservations.map(function (r) {
-        return '' +
-          '<li class="res-item" data-id="' + r.id + '">' +
-            '<div class="res-info">' +
-              '<div class="res-name">' + escapeHtml(r.name) +
-                '<span class="people">' + escapeHtml(r.people) + '명</span>' +
-              '</div>' +
-              '<div class="res-meta">' +
-                '<span>☕ ' + escapeHtml(r.menu) + '</span>' +
-                '<span>📅 ' + escapeHtml(r.date) + '</span>' +
-                '<span>🕒 ' + escapeHtml(r.pickup) + '</span>' +
-                '<span>📞 ' + escapeHtml(r.phone) + '</span>' +
-              '</div>' +
-            '</div>' +
-            '<button type="button" class="btn-del" data-id="' + r.id + '">삭제</button>' +
-          '</li>';
-      }).join('');
     }
 
     form.addEventListener('submit', function (e) {
@@ -729,7 +831,6 @@
           date: values.date, pickup: values.pickup, people: values.people,
         });
         saveToStorage();
-        render();
         form.reset();
         clearAllErrors();
         submitBtn.disabled = false;
@@ -745,20 +846,7 @@
       fields[k].addEventListener(ev, function () { setFieldError(k, ''); });
     });
 
-    // 삭제 버튼: 이벤트 위임으로 해당 항목만 제거
-    listEl.addEventListener('click', function (e) {
-      const btn = e.target.closest('.btn-del');
-      if (!btn) return;
-      // 삭제 전 확인 창
-      if (!window.confirm('이 예약을 삭제할까요?')) return;
-      const id = Number(btn.getAttribute('data-id'));
-      reservations = reservations.filter(function (r) { return r.id !== id; });
-      saveToStorage();
-      render();
-    });
-
     loadFromStorage();
-    render();
   </script>
 
 </body>
