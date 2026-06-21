@@ -1,0 +1,5 @@
+# 모닝브루 — 크롤러 안내 (도메인은 실제 배포 주소로 교체 필요)
+User-agent: *
+Allow: /
+
+Sitemap: https://morningbrew.example.com/sitemap.xml

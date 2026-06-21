@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>페르소나 기반 SEO · GEO 완성도 평가 보고서</title>
+  <meta name="description" content="5개 페르소나 서브에이전트가 모닝브루 홈페이지(Day05/index.html)의 SEO·GEO 완성도를 평가한 종합 보고서." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #faf6f0;
+      --card: #ffffff;
+      --ink: #3a312a;
+      --ink-soft: #6b5d52;
+      --accent: #c0703a;
+      --accent-dark: #a85a28;
+      --line: #ece2d6;
+      --good: #2f7d4f;
+      --warn: #b4452f;
+      --shadow: 0 8px 28px rgba(95, 72, 50, 0.10);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.75;
+      -webkit-font-smoothing: antialiased; padding: 0 0 64px;
+    }
+    .wrap { width: 100%; max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+    header.report-head {
+      background: linear-gradient(160deg, #fff7ee 0%, #f6e7d4 100%);
+      border-bottom: 1px solid var(--line); padding: 52px 20px 40px; margin-bottom: 36px;
+    }
+    .report-head .badge {
+      display: inline-block; font-size: 0.78rem; letter-spacing: 0.12em;
+      color: var(--accent-dark); background: #fff; border: 1px solid var(--line);
+      padding: 5px 14px; border-radius: 999px; margin-bottom: 16px;
+    }
+    .report-head h1 { font-family: 'Gowun Batang', serif; font-size: 2rem; letter-spacing: -0.01em; margin-bottom: 14px; }
+    .meta-list { list-style: none; font-size: 0.9rem; color: var(--ink-soft); }
+    .meta-list li { margin: 2px 0; }
+    .meta-list b { color: var(--ink); font-weight: 700; }
+
+    h2.sec { font-family: 'Gowun Batang', serif; font-size: 1.4rem; margin: 38px 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--line); }
+    h3.sub { font-size: 1.05rem; margin: 22px 0 10px; color: var(--accent-dark); }
+    p { margin: 10px 0; }
+    ul, ol { margin: 10px 0 10px 22px; }
+    li { margin: 4px 0; }
+
+    table { width: 100%; border-collapse: collapse; margin: 14px 0 18px; font-size: 0.88rem; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+    th, td { text-align: left; padding: 10px 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: #fbeede; color: var(--accent-dark); font-weight: 700; }
+    tr:last-child td { border-bottom: none; }
+    td.c, th.c { text-align: center; white-space: nowrap; }
+
+    .pill { display: inline-block; font-size: 0.76rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; }
+    .pill.good { background: #e3f3ea; color: var(--good); }
+    .pill.warn { background: #fbe7e2; color: var(--warn); }
+    .pill.crit { background: var(--warn); color: #fff; }
+
+    .score-big { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; }
+    .score-card { flex: 1; min-width: 150px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow); }
+    .score-card .label { font-size: 0.85rem; color: var(--ink-soft); }
+    .score-card .num { font-family: 'Gowun Batang', serif; font-size: 2rem; font-weight: 700; }
+    .score-card .num small { font-size: 1rem; color: var(--ink-soft); }
+    .bar { height: 8px; border-radius: 999px; background: #efe3d4; margin-top: 10px; overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); }
+
+    .callout { background: #fff7f5; border: 1px solid #eccfc7; border-left: 4px solid var(--warn); border-radius: 10px; padding: 14px 16px; margin: 16px 0; font-size: 0.92rem; }
+    .callout b { color: var(--warn); }
+    .insight { background: #f4f7f2; border: 1px solid #d9e4d2; border-left: 4px solid var(--good); border-radius: 10px; padding: 14px 16px; margin: 16px 0; font-size: 0.92rem; }
+    .insight b { color: var(--good); }
+
+    footer { text-align: center; color: var(--ink-soft); font-size: 0.82rem; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); }
+    @media (min-width: 640px) { .report-head h1 { font-size: 2.4rem; } }
+  </style>
+</head>
+<body>
+  <header class="report-head">
+    <div class="wrap">
+      <span class="badge">PERSONA SEO · GEO REVIEW · 6일차(월)</span>
+      <h1>페르소나 기반 SEO · GEO 완성도 평가 보고서</h1>
+      <ul class="meta-list">
+        <li><b>평가 대상</b> · <code>Day05/index.html</code> (AEO/GEO 개선 반영본)</li>
+        <li><b>평가 방식</b> · 이해도·관점이 다른 <b>5개 페르소나 서브에이전트</b> 병렬 독립 평가 → 종합</li>
+        <li><b>의도</b> · "사람마다 이해 정도가 다르다"를 관점별 점수 편차로 가시화</li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <h2 class="sec">1. 요약</h2>
+    <div class="score-big">
+      <div class="score-card">
+        <div class="label">SEO 평균</div>
+        <div class="num">78<small> / 100</small></div>
+        <div class="bar"><span style="width:78%"></span></div>
+        <p style="font-size:0.82rem;color:var(--ink-soft);margin:8px 0 0;">편차 68~84 (16점)</p>
+      </div>
+      <div class="score-card">
+        <div class="label">GEO 평균</div>
+        <div class="num">80<small> / 100</small></div>
+        <div class="bar"><span style="width:80%"></span></div>
+        <p style="font-size:0.82rem;color:var(--ink-soft);margin:8px 0 0;">편차 74~88 (14점)</p>
+      </div>
+      <div class="score-card">
+        <div class="label">전원 합의 결함</div>
+        <div class="num" style="color:var(--warn)">5<small>/5</small></div>
+        <div class="bar"><span style="width:100%;background:var(--warn)"></span></div>
+        <p style="font-size:0.82rem;color:var(--ink-soft);margin:8px 0 0;">가짜데이터·example.com</p>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>페르소나</th><th class="c">SEO</th><th class="c">GEO</th><th>한줄평</th></tr>
+      <tr><td>🔧 기술 SEO 전문가</td><td class="c"><b>68</b></td><td class="c">74</td><td>마크업 기본기는 탄탄하나 example.com 위에 세워져 참조 무결성 전무</td></tr>
+      <tr><td>🤖 GEO / AI 답변엔진 전문가</td><td class="c"><b>82</b></td><td class="c">76</td><td>엔티티 추출·FAQ 인용 최적이나 가짜값이 AI 인용 신뢰도를 깎음</td></tr>
+      <tr><td>☕ 소상공인 카페 사장(비전문가)</td><td class="c">78</td><td class="c">82</td><td>검색·AI 채비는 똑부러지나 손님 줄 주소·전화가 빈칸</td></tr>
+      <tr><td>🚶 출근길 직장인(실사용자)</td><td class="c"><b>84</b></td><td class="c"><b>88</b></td><td>진입·정보는 훌륭하나 예약 폼이 실제 전송 안 돼 신뢰 붕괴</td></tr>
+      <tr><td>📈 디지털 마케터</td><td class="c">78</td><td class="c">82</td><td>노출 토대는 탄탄, 리뷰·실사진·실데이터 없어 전환 직전 누수</td></tr>
+      <tr><th>평균</th><th class="c">78</th><th class="c">80</th><th>체크리스트 완성도↑ · 실배포 준비도↓</th></tr>
+    </table>
+    <p><b>종합 한 줄:</b> 기술 체크리스트는 거의 통과했지만, <b>실데이터·작동하는 예약·신뢰자산</b>이 비어 "발견은 되는데 믿고 전환되지는 않는" 상태.</p>
+
+    <h2 class="sec">2. 관점별 점수 편차 — 핵심 인사이트</h2>
+    <div class="insight">
+      <b>이해도가 높은 페르소나일수록 점수가 낮다.</b> 같은 페이지인데 SEO 68~84, GEO 74~88로 갈렸다. 표면(사용자 체감)은 합격선이지만, 깊이 볼수록 드러나는 인프라 결함(가짜 도메인·NAP·비작동 폼)이 실제 성과를 막는다.
+    </div>
+    <table>
+      <tr><th>구분</th><th class="c">SEO</th><th>시선의 초점</th></tr>
+      <tr><td>가장 박함 — 🔧 기술 SEO</td><td class="c">68</td><td>참조 무결성·표준·중복 URL — "배포하면 색인 전량 탈락 위험"</td></tr>
+      <tr><td>중간 — ☕ 사장 · 📈 마케터</td><td class="c">78</td><td>손님 신뢰·전환·실데이터 — "찾을 수 있나? 믿고 오나?"</td></tr>
+      <tr><td>가장 후함 — 🚶 실사용자</td><td class="c">84</td><td>체감 경험 — "검색 잘 되고 예약 버튼 명확해 보기 좋다"</td></tr>
+    </table>
+
+    <h2 class="sec">3. 합의된 강점 <span class="pill good">GOOD</span></h2>
+    <table>
+      <tr><th>강점</th><th>지지 페르소나</th></tr>
+      <tr><td>구조화 데이터(CafeOrCoffeeShop+FAQPage)와 본문 사실값 일치 — AI 교차검증·리치결과 적합</td><td>기술SEO · GEO · 마케터</td></tr>
+      <tr><td>정적 텍스트로 핵심 엔티티 노출(상호·위치·시간·메뉴·가격·FAQ) — JS 없이 추출</td><td>GEO · 실사용자</td></tr>
+      <tr><td>키워드 일관성("연남동/출근길/픽업")이 title~schema 전반 관통</td><td>GEO · 마케터 · 실사용자</td></tr>
+      <tr><td>단일·선명한 가치 제안 + 명확한 예약 CTA + 모바일 진입 동선</td><td>실사용자 · 마케터 · 사장</td></tr>
+      <tr><td>헤딩 위계·시맨틱·메타 세트 완비(H1 1개, OG/canonical/twitter)</td><td>기술SEO</td></tr>
+    </table>
+
+    <h2 class="sec">4. 합의된 약점 · 리스크 <span class="pill warn">FIX</span></h2>
+    <table>
+      <tr><th>#</th><th>약점</th><th class="c">심각도</th><th class="c">지지(5中)</th></tr>
+      <tr><td>C1</td><td><b>가짜 데이터 · example.com 도메인</b> — NAP·데모 인스타·canonical/og/sitemap/JSON-LD 전부 placeholder. AI 허위 인용·색인 탈락</td><td class="c"><span class="pill crit">치명</span></td><td class="c"><b>5/5</b></td></tr>
+      <tr><td>C2</td><td><b>예약 폼이 실제 전송 안 됨</b>(localStorage만) — "예약됨"은 허상 → CTA 허상</td><td class="c">높음</td><td class="c">2</td></tr>
+      <tr><td>C3</td><td>신뢰 자산 부재 — 리뷰·별점(aggregateRating)·실사진·실 SNS 없음</td><td class="c">높음</td><td class="c">3</td></tr>
+      <tr><td>C4</td><td>위치 정밀도 부족 — 번지·우편번호·geo(위경도)·지도/길찾기 없음</td><td class="c">높음</td><td class="c">3</td></tr>
+      <tr><td>C5</td><td>canonical ↔ sitemap URL 불일치 — 중복 색인 신호(/ + /Day05/index.html)</td><td class="c">중간</td><td class="c">1</td></tr>
+      <tr><td>C6</td><td>JSON-LD 보강 — geo·postalCode·aggregateRating·acceptsReservations·dateModified 누락, priceRange 비표준, @graph 미연결</td><td class="c">중간</td><td class="c">2</td></tr>
+      <tr><td>C7</td><td>출근 핵심 정보 누락 — 주문 마감/리드타임, 결제 방식</td><td class="c">중간</td><td class="c">1</td></tr>
+      <tr><td>C8</td><td>차별화가 기능 수준 — 원두·동네성 등 브랜드 스토리·인덱싱 콘텐츠 부족</td><td class="c">낮음</td><td class="c">1</td></tr>
+    </table>
+
+    <h2 class="sec">5. 종합 우선순위 개선 로드맵</h2>
+    <h3 class="sub">🔴 배포 전 필수 (블로커)</h3>
+    <ol>
+      <li><b>실데이터 전면 교체</b> — 실제 도메인·주소(번지·우편번호)·전화·인스타로 canonical·OG·sitemap·JSON-LD 일괄 치환. 불가 시 <code>&lt;meta name="robots" content="noindex"&gt;</code>로 색인 차단 (C1)</li>
+      <li><b>예약 폼 실동작화</b> — 카카오채널/문자/웹훅 등 매장 전달 + 확인 안내. 어려우면 "전화·DM 예약" CTA로 솔직히 대체 (C2)</li>
+    </ol>
+    <h3 class="sub">🟡 신뢰·발견 강화 (효과 대비 비용 우수)</h3>
+    <ol start="3">
+      <li>리뷰/별점 섹션 + <code>aggregateRating</code>·<code>Review</code> 스키마 + 실사진 3~4장 → CTR·전환 동반 상승 (C3)</li>
+      <li>정확한 주소 + 네이버/카카오맵 길찾기 버튼 + JSON-LD <code>geo</code>/<code>postalCode</code> (C4)</li>
+      <li>URL 정규화 — sitemap에서 <code>/Day05/index.html</code> 제거 또는 canonical 통일 + 301 (C5)</li>
+    </ol>
+    <h3 class="sub">🔵 구조화·콘텐츠 정교화</h3>
+    <ol start="6">
+      <li>JSON-LD <code>acceptsReservations</code>·<code>dateModified</code> 추가, <code>@graph</code>로 엔티티 연결, <code>priceRange</code> 표준화 (C6)</li>
+      <li>주문 마감/리드타임·결제 방식 명시 (C7), 원두·동네 스토리 등 차별화 콘텐츠 (C8)</li>
+    </ol>
+
+    <h2 class="sec">6. 주의 — 실습용 가짜 데이터</h2>
+    <div class="callout">
+      <b>전원 합의(5/5).</b> 가장 큰 결함은 <b>실습용 가짜 데이터</b>(<code>example.com</code>, <code>02-000-0000</code>, <code>@morningbrew_demo</code>, 예시 주소)입니다.
+      특히 GEO/AI 관점에서는 <b>사람용 "실습용" 주석을 LLM은 무시하고 구조화 필드를 사실로 인용</b>하므로,
+      실데이터 교체 또는 <code>noindex</code> 차단 전에는 검색/AI에 노출하지 마세요. 실데이터 확정 후 재평가 권장. <b>(확인 필요)</b>
+    </div>
+
+    <footer>
+      페르소나 기반 SEO · GEO 완성도 평가 보고서 · 6일차(월) 2026-06-22 · 평가 대상 Day05/index.html · 5 personas
+    </footer>
+  </main>
+</body>
+</html>
