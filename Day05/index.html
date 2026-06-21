@@ -384,6 +384,7 @@
       opacity: 1;
       transform: translate(-50%, 0);
     }
+    .toast.error { background: #b23b3b; }
 
     /* ===== List ===== */
     .list-head {
@@ -720,31 +721,13 @@
     <small>최종 업데이트: 2026-06-22</small>
   </footer>
 
+  <!-- Supabase JS 클라이언트 (CDN, npm 설치 불필요) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // 예약 데이터는 localStorage에 영구 저장 (새로고침 후에도 유지)
-    const STORAGE_KEY = 'mb_reservations';
-    let reservations = [];
-    let nextId = 1;
-
-    function loadFromStorage() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const data = JSON.parse(raw);
-          reservations = Array.isArray(data.items) ? data.items : [];
-          nextId = data.nextId || (reservations.reduce(function (m, r) { return Math.max(m, r.id); }, 0) + 1);
-        }
-      } catch (e) {
-        reservations = [];
-        nextId = 1;
-      }
-    }
-
-    function saveToStorage() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ items: reservations, nextId: nextId }));
-      } catch (e) { /* 시크릿 모드 등 저장 불가 시 무시 */ }
-    }
+    // Supabase 초기화
+    const SUPABASE_URL = 'https://phuknnyhinshixnwctet.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBodWtubnloaW5zaGl4bndjdGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NzQ4NzcsImV4cCI6MjA5NzU1MDg3N30.3kre047kq570LDU7jmHDK3-a6U0Pr-et5YcfEphUMRA';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const form = document.getElementById('reservation-form');
     const submitBtn = document.getElementById('submit-btn');
@@ -782,14 +765,15 @@
     }
 
     let toastTimer = null;
-    function showToast(message) {
+    function showToast(message, isError) {
       toast.textContent = message;
+      toast.classList.toggle('error', Boolean(isError));
       toast.classList.add('show');
       if (toastTimer) clearTimeout(toastTimer);
       toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 3000);
     }
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const values = {
         name: fields.name.value.trim(),
@@ -821,23 +805,31 @@
         return;
       }
 
-      // 2) '저장 중...' 잠깐 표시 후 추가 → 초록 토스트(3초)
+      // 2) Supabase reservations 테이블에 INSERT
       submitBtn.disabled = true;
       submitBtn.textContent = '저장 중...';
-      setTimeout(function () {
-        reservations.push({
-          id: nextId++,
-          name: values.name, phone: values.phone, menu: values.menu,
-          date: values.date, pickup: values.pickup, people: values.people,
-        });
-        saveToStorage();
+      try {
+        // 폼 필드 → 테이블 컬럼 매핑 (date(픽업 날짜)는 테이블에 없어 저장하지 않음)
+        const { error } = await supabaseClient.from('reservations').insert([{
+          name: values.name,
+          phone: values.phone,
+          menu_preference: values.menu,
+          time: values.pickup,
+          count: Number(values.people),
+        }]);
+        if (error) throw error;
+
         form.reset();
         clearAllErrors();
+        showToast('예약이 접수되었습니다! 방문 전날 연락드리겠습니다.');
+        fields.name.focus();
+      } catch (err) {
+        console.error('예약 저장 실패:', err);
+        showToast('잠시 후 다시 시도해주세요.', true);
+      } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = '＋ 예약 추가';
-        showToast('예약이 추가되었습니다!');
-        fields.name.focus();
-      }, 600);
+      }
     });
 
     // 입력/선택하면 해당 칸의 에러 즉시 해제
@@ -845,8 +837,6 @@
       const ev = fields[k].tagName === 'SELECT' ? 'change' : 'input';
       fields[k].addEventListener(ev, function () { setFieldError(k, ''); });
     });
-
-    loadFromStorage();
   </script>
 
 </body>
